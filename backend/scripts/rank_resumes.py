@@ -1,7 +1,7 @@
 import os
-from skill_extractor import extract_entities_and_skills
-from matcher import compute_similarity
-from extractor import extract_text_generic
+from .skill_extractor import extract_entities_and_skills
+from .matcher import compute_similarity
+from .extractor import extract_text_generic
 import numpy as np
 
 def rank_resumes_against_jd(jd_path, resumes_folder_path):
