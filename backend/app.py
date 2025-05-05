@@ -31,8 +31,32 @@ def upload_files():
 
     # Run ranking logic
     results = rank_resumes_against_jd(jd_path, resume_folder)
+    
+    # Convert NumPy types to Python native types
+    serializable_results = convert_to_serializable(results)
 
-    return jsonify({'ranked': results})
+    return jsonify({'ranked': serializable_results})
+
+def convert_to_serializable(obj):
+    """Convert NumPy types to JSON serializable Python types."""
+    import numpy as np
+    
+    if isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, (np.intc, np.intp, np.int8, np.int16, np.int32,
+                         np.int64, np.uint8, np.uint16, np.uint32, np.uint64)):
+        return int(obj)
+    elif isinstance(obj, (np.float16, np.float32, np.float64)):
+        return float(obj)
+    elif isinstance(obj, (np.bool_)):
+        return bool(obj)
+    elif isinstance(obj, dict):
+        return {key: convert_to_serializable(value) for key, value in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_to_serializable(item) for item in obj]
+    elif isinstance(obj, tuple):
+        return tuple(convert_to_serializable(item) for item in obj)
+    return obj
 
 if __name__ == '__main__':
     app.run(debug=True)
