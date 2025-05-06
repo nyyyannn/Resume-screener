@@ -2,10 +2,12 @@ from flask import Flask, request, jsonify
 import os
 from werkzeug.utils import secure_filename
 import uuid
+from flask_cors import CORS
 
 from scripts.rank_resumes import rank_resumes_against_jd
 
 app = Flask(__name__)
+CORS(app)
 UPLOAD_FOLDER = './uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -17,28 +19,23 @@ def upload_files():
     if not jd_file or not resumes:
         return jsonify({'error': 'Missing JD or resumes'}), 400
 
-    # Save JD file
     jd_filename = secure_filename(jd_file.filename)
     jd_path = os.path.join(UPLOAD_FOLDER, f"{uuid.uuid4()}_{jd_filename}")
     jd_file.save(jd_path)
 
-    # Save resumes to a folder
     resume_folder = os.path.join(UPLOAD_FOLDER, str(uuid.uuid4()))
     os.makedirs(resume_folder, exist_ok=True)
     for file in resumes:
         filename = secure_filename(file.filename)
         file.save(os.path.join(resume_folder, filename))
 
-    # Run ranking logic
     results = rank_resumes_against_jd(jd_path, resume_folder)
     
-    # Convert NumPy types to Python native types
     serializable_results = convert_to_serializable(results)
 
     return jsonify({'ranked': serializable_results})
 
 def convert_to_serializable(obj):
-    """Convert NumPy types to JSON serializable Python types."""
     import numpy as np
     
     if isinstance(obj, np.ndarray):
@@ -60,3 +57,4 @@ def convert_to_serializable(obj):
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
