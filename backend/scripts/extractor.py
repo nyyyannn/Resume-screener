@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from pdfminer.high_level import extract_text
 from docx import Document

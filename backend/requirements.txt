@@ -1,5 +1,9 @@
-Flask
-python-docx
-pdfminer.six
-spacy
-scikit-learn
+# Requires Python >=3.10,<3.11
+
+spacy==3.7.2
+sentence-transformers==2.6.1
+torch>=1.9.0
+pdfminer.six==20221105
+python-docx==1.1.0
+numpy>=1.21.0
+en-core-web-lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.7.0/en_core_web_lg-3.7.0-py3-none-any.whl
