@@ -3,7 +3,6 @@ import os
 from werkzeug.utils import secure_filename
 import uuid
 from flask_cors import CORS
-from scripts.rank_resumes import rank_resumes_against_jd  # ✅ Corrected absolute import
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "https://resume-screener-teal.vercel.app"}}, supports_credentials=True)
@@ -13,6 +12,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route('/upload', methods=['POST', 'OPTIONS'])  # ✅ Include OPTIONS
 def upload_files():
+    from scripts.rank_resumes import rank_resumes_against_jd  # ✅ Corrected absolute import
     jd_file = request.files.get('jd')
     resumes = request.files.getlist('resumes')
 
