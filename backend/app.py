@@ -3,19 +3,16 @@ import os
 from werkzeug.utils import secure_filename
 import uuid
 from flask_cors import CORS
-import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), 'scripts'))
-
+from scripts.rank_resumes import rank_resumes_against_jd  # ✅ Corrected absolute import
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "https://resume-screener-teal.vercel.app"}},supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": "https://resume-screener-teal.vercel.app"}}, supports_credentials=True)
+
 UPLOAD_FOLDER = './uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['POST', 'OPTIONS'])  # ✅ Include OPTIONS
 def upload_files():
-    from rank_resumes import rank_resumes_against_jd
-    # Ensure the upload folder exists
     jd_file = request.files.get('jd')
     resumes = request.files.getlist('resumes')
 
@@ -33,23 +30,15 @@ def upload_files():
         file.save(os.path.join(resume_folder, filename))
 
     results = rank_resumes_against_jd(jd_path, resume_folder)
-    
     serializable_results = convert_to_serializable(results)
-
     return jsonify({'ranked': serializable_results})
 
 def convert_to_serializable(obj):
     import numpy as np
-    
     if isinstance(obj, np.ndarray):
         return obj.tolist()
-    elif isinstance(obj, (np.intc, np.intp, np.int8, np.int16, np.int32,
-                         np.int64, np.uint8, np.uint16, np.uint32, np.uint64)):
-        return int(obj)
-    elif isinstance(obj, (np.float16, np.float32, np.float64)):
-        return float(obj)
-    elif isinstance(obj, (np.bool_)):
-        return bool(obj)
+    elif isinstance(obj, (np.generic,)):
+        return obj.item()
     elif isinstance(obj, dict):
         return {key: convert_to_serializable(value) for key, value in obj.items()}
     elif isinstance(obj, list):
@@ -60,4 +49,3 @@ def convert_to_serializable(obj):
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
