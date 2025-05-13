@@ -1,9 +1,8 @@
 from collections import Counter
 
-
 def extract_relevant_phrases(text):
     import spacy
-    nlp = spacy.load("en_core_web_lg")
+    nlp = spacy.load("en_core_web_sm")
     doc = nlp(text)
     skill_phrases = set()
     experience_phrases = set()

@@ -1,6 +1,6 @@
 from sentence_transformers import SentenceTransformer, util
 
-model = SentenceTransformer('all-MiniLM-L6-v2')  
+model = SentenceTransformer('paraphrase-MiniLM-L32-v2')  
 
 def compute_similarity(doc1, doc2):
     
