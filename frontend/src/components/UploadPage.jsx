@@ -4,10 +4,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ClipLoader } from "react-spinners";
 
-const VITE_APP_URL = import.meta.env.VITE_APP_URL;
-
 const UploadPage = () => {
 
+  const VITE_APP_URL = import.meta.env.VITE_APP_URL;
   
   const [resumes, setResumes] = useState([]);
   const [jd, setJd] = useState(null);
@@ -33,6 +32,7 @@ const UploadPage = () => {
     setResults(null);
 
     try {
+      console.log("API BASE URL is", VITE_APP_URL);
       const response = await axios.post(`${VITE_APP_URL}/upload}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
