@@ -33,7 +33,7 @@ const UploadPage = () => {
 
     try {
       console.log("API BASE URL is", VITE_APP_URL);
-      const response = await axios.post(`${VITE_APP_URL}/upload}`, formData, {
+      const response = await axios.post(`${VITE_APP_URL}/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
