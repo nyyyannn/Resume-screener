@@ -3,8 +3,9 @@ import os
 from werkzeug.utils import secure_filename
 import uuid
 from flask_cors import CORS
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), 'scripts'))
 
-from scripts.rank_resumes import rank_resumes_against_jd
 
 app = Flask(__name__)
 CORS(app)
@@ -13,6 +14,8 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route('/upload', methods=['POST'])
 def upload_files():
+    from rank_resumes import rank_resumes_against_jd
+    # Ensure the upload folder exists
     jd_file = request.files.get('jd')
     resumes = request.files.getlist('resumes')
 
