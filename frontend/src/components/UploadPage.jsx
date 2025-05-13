@@ -6,7 +6,7 @@ import { ClipLoader } from "react-spinners";
 
 const UploadPage = () => {
 
-  const VITE_APP_URL = import.meta.env.VITE_APP_URL;
+  const API_BASE_URL = import.meta.env.VITE_APP_URL;
   
   const [resumes, setResumes] = useState([]);
   const [jd, setJd] = useState(null);
@@ -32,8 +32,8 @@ const UploadPage = () => {
     setResults(null);
 
     try {
-      console.log("API BASE URL is", VITE_APP_URL);
-      const response = await axios.post(`${VITE_APP_URL}/upload`, formData, {
+      console.log("API BASE URL is", API_BASE_URL);
+      const response = await axios.post(`${API_BASE_URL}/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
