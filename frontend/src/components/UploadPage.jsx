@@ -6,7 +6,8 @@ import { ClipLoader } from "react-spinners";
 
 const UploadPage = () => {
 
-  const API_BASE_URL = import.meta.env.VITE_APP_URL;
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
+  console.log("API_BASE_URL is", API_BASE_URL);
   
   const [resumes, setResumes] = useState([]);
   const [jd, setJd] = useState(null);
