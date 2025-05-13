@@ -4,7 +4,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ClipLoader } from "react-spinners";
 
+const VITE_APP_URL = import.meta.env.VITE_APP_URL;
+
 const UploadPage = () => {
+
+  
   const [resumes, setResumes] = useState([]);
   const [jd, setJd] = useState(null);
   const [results, setResults] = useState(null);
@@ -29,7 +33,7 @@ const UploadPage = () => {
     setResults(null);
 
     try {
-      const response = await axios.post(`${REACT_APP_API_URL}/upload}`, formData, {
+      const response = await axios.post(`${VITE_APP_URL}/upload}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
