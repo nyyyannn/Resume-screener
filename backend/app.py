@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'scripts'))
 
 
 app = Flask(__name__)
-CORS(app, origins=["https://resume-screener-teal.vercel.app"])
+CORS(app, resources={r"/*": {"origins": "https://resume-screener-teal.vercel.app"}},supports_credentials=True)
 UPLOAD_FOLDER = './uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
